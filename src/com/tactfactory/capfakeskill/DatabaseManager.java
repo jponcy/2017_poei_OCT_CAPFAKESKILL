@@ -28,6 +28,11 @@ public class DatabaseManager {
     /** The SQL request to create the database. */
     private static final String SQL_CREATE_DB = "CREATE DATABASE " + DATABASE_NAME;
 
+    private static final String SQL_CREATE_ST = "CREATE TABLE " + DATABASE_NAME + ".skill_type ("
+            + "id BIGINT AUTO_INCREMENT PRIMARY KEY,"
+            + "name VARCHAR(500) UNIQUE"
+            + ")ENGINE=innoDB";
+
     /** The unique instance of class -- DP singleton. */
     private static volatile DatabaseManager instance;
     /** The connection instance keeps for program run. */
@@ -46,12 +51,15 @@ public class DatabaseManager {
     public void prepareDb(boolean production) {
         if (!production) {
             try (
-                Connection        sgbd   = this.createConnectionSGBD();
-                PreparedStatement drop   = sgbd.prepareStatement(SQL_DROP_DB);
-                PreparedStatement create = sgbd.prepareStatement(SQL_CREATE_DB)
+                Connection        sgbd      = this.createConnectionSGBD();
+                PreparedStatement drop      = sgbd.prepareStatement(SQL_DROP_DB);
+                PreparedStatement create    = sgbd.prepareStatement(SQL_CREATE_DB);
+                PreparedStatement skillType = sgbd.prepareStatement(SQL_CREATE_ST)
             ) {
                 drop.executeUpdate();
                 create.executeUpdate();
+
+                skillType.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
                 System.exit(42);
