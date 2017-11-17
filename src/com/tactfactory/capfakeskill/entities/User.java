@@ -44,4 +44,11 @@ public class User extends BaseEntity {
 	public String getLogin() {
 		return this.firstname + "." + this.lastname;
 	}
+
+	@Override
+	public String toString() {
+		return "User [lastname=" + lastname + ", firstname=" + firstname
+				+ ", email=" + email + ", password=" + password + ", getId()="
+				+ getId() + "]";
+	}
 }

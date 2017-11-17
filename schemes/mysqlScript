@@ -1,0 +1,116 @@
+#------------------------------------------------------------
+#        Script MySQL.
+#------------------------------------------------------------
+
+DROP DATABASE 2017_poec_capfakeskill;
+
+CREATE DATABASE 2017_poec_capfakeskill;
+
+use 2017_poec_capfakeskill;
+
+#------------------------------------------------------------
+# Table: User
+#------------------------------------------------------------
+
+CREATE TABLE User(
+        id        int (11) Auto_increment  NOT NULL ,
+        lastname  Varchar (255) ,
+        firstname Varchar (255) ,
+        email     Varchar (255) ,
+        password  Varchar (100) ,
+        id_carrer_manager   Int ,
+        PRIMARY KEY (id )
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Project
+#------------------------------------------------------------
+
+CREATE TABLE Project(
+        id          int (11) Auto_increment  NOT NULL ,
+        name        Varchar (255) ,
+        startAt     Date ,
+        description Text ,
+        endAt       Date ,
+        deadline    Date ,
+        id_User     Int ,
+        PRIMARY KEY (id ) ,
+        UNIQUE (name )
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Skill
+#------------------------------------------------------------
+
+CREATE TABLE Skill(
+        id           int (11) Auto_increment  NOT NULL ,
+        name         Varchar (255) ,
+        id_SkillType Int ,
+        PRIMARY KEY (id ) ,
+        UNIQUE (name )
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: SkillType
+#------------------------------------------------------------
+
+CREATE TABLE SkillType(
+        id   int (11) Auto_increment  NOT NULL ,
+        name Varchar (255) ,
+        PRIMARY KEY (id ) ,
+        UNIQUE (name )
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Collaborator
+#------------------------------------------------------------
+
+CREATE TABLE Collaborator(
+        startAt Date ,
+        endAt   Date ,
+        id_Project      Int NOT NULL ,
+        id_User         Int NOT NULL ,
+        PRIMARY KEY (id_Project ,id_User )
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: ProjectSkills
+#------------------------------------------------------------
+
+CREATE TABLE ProjectSkills(
+        id_Project      Int NOT NULL ,
+        id_Skill        Int NOT NULL ,
+        PRIMARY KEY (id_Project ,id_Skill )
+)ENGINE=InnoDB;
+
+
+#------------------------------------------------------------
+# Table: Grading
+#------------------------------------------------------------
+
+CREATE TABLE Grading(
+        goal       Int ,
+        succes     Bool ,
+        startAt    Date ,
+        endAt      Date ,
+        id_User    Int NOT NULL ,
+        id_Project Int NOT NULL ,
+        id_Skill   Int NOT NULL ,
+        PRIMARY KEY (id_User ,id_Project ,id_Skill )
+)ENGINE=InnoDB;
+
+ALTER TABLE User ADD CONSTRAINT FK_User_id_carrer_manager FOREIGN KEY (id_carrer_manager) REFERENCES User(id);
+ALTER TABLE Project ADD CONSTRAINT FK_Project_id_User FOREIGN KEY (id_User) REFERENCES User(id);
+ALTER TABLE Skill ADD CONSTRAINT FK_Skill_id_SkillType FOREIGN KEY (id_SkillType) REFERENCES SkillType(id);
+ALTER TABLE Collaborator ADD CONSTRAINT FK_Collaborator_id_Project FOREIGN KEY (id_Project) REFERENCES Project(id);
+ALTER TABLE Collaborator ADD CONSTRAINT FK_Collaborator_id_User FOREIGN KEY (id_User) REFERENCES User(id);
+ALTER TABLE ProjectSkills ADD CONSTRAINT FK_ProjectSkills_id_Project FOREIGN KEY (id_Project) REFERENCES Project(id);
+ALTER TABLE ProjectSkills ADD CONSTRAINT FK_ProjectSkills_id_Skill FOREIGN KEY (id_Skill) REFERENCES Skill(id);
+ALTER TABLE Grading ADD CONSTRAINT FK_Grading_id_User FOREIGN KEY (id_User) REFERENCES User(id);
+ALTER TABLE Grading ADD CONSTRAINT FK_Grading_id_Project FOREIGN KEY (id_Project) REFERENCES Project(id);
+ALTER TABLE Grading ADD CONSTRAINT FK_Grading_id_Skill FOREIGN KEY (id_Skill) REFERENCES Skill(id);

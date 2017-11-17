@@ -62,4 +62,12 @@ public class Project extends BaseEntity {
 		this.skills = skills;
 	}
 
+	@Override
+	public String toString() {
+		return "Project [name=" + name + ", startAt=" + startAt + ", endAt="
+				+ endAt + ", deadline=" + deadline + ", description="
+				+ description + ", skills=" + skills + ", getId()=" + getId()
+				+ "]";
+	}
+
 }

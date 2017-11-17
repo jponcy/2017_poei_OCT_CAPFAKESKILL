@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.tactfactory.capfakeskill.entities.base.BaseEntity;
 
-public interface IBaseDAO {
+public interface IBaseDAO <T extends BaseEntity> {
 
-	public BaseEntity insert(BaseEntity item);
-	public void delete(BaseEntity item);
-	public void update(BaseEntity item);
-	public BaseEntity select(BaseEntity item);
-	public List<BaseEntity> select();
+	public T insert(T item);
+	public void delete(T item);
+	public void update(T item);
+	public T select(T item);
+	public List<T> select();
+
+	public String getCreateTable();
 }
