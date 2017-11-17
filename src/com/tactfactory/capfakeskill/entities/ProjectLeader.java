@@ -11,7 +11,7 @@ public class ProjectLeader extends User {
 	}
 
 	public void setProjects(List<Project> projects) {
-		this.projects = project;
+		this.projects = projects;
 	}
 
 }

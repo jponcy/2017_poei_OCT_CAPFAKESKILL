@@ -79,7 +79,7 @@ public class SkillTypeDao {
                     String name = rs.getString("name");
                     int id = rs.getInt("id");
 
-                    result.add(new SkillType(name).setId(id));
+//                    result.add(new SkillType(name).setId(id));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

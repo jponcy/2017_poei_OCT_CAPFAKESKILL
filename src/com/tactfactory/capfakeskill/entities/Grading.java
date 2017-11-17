@@ -3,24 +3,16 @@ package com.tactfactory.capfakeskill.entities;
 import java.util.Date;
 import java.util.List;
 
-public class Grading {
+import com.tactfactory.capfakeskill.entities.base.BaseEntity;
 
-	private Project project;
+public class Grading extends BaseEntity {
+
 	private List<CollaboratorSkills> skillsGoal;
 	private ProjectLeader leader;
 	private Collaborator collaborator;
-	private Integer goal;
 	private Boolean succes;
 	private Date startAt;
 	private Date endAt;
-
-	public Project getProject() {
-		return project;
-	}
-
-	public void setProject(Project project) {
-		this.project = project;
-	}
 
 	public List<CollaboratorSkills> getSkillsGoal() {
 		return skillsGoal;
@@ -44,14 +36,6 @@ public class Grading {
 
 	public void setCollaborator(Collaborator collaborator) {
 		this.collaborator = collaborator;
-	}
-
-	public Integer getGoal() {
-		return goal;
-	}
-
-	public void setGoal(Integer goal) {
-		this.goal = goal;
 	}
 
 	public Boolean getSucces() {

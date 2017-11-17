@@ -1,6 +1,9 @@
 package com.tactfactory.capfakeskill.entities;
 
-public class Skill {
+import com.tactfactory.capfakeskill.entities.base.BaseEntity;
+
+public class Skill extends BaseEntity {
+
 	private String name;
 	private SkillType type;
 
