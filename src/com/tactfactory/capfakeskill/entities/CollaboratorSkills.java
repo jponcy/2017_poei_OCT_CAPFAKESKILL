@@ -4,17 +4,8 @@ import com.tactfactory.capfakeskill.entities.base.BaseEntity;
 
 public class CollaboratorSkills extends BaseEntity {
 
-	private Collaborator collaborator;
 	private Skill skill;
 	private Integer level;
-
-	public Collaborator getCollaborator() {
-		return collaborator;
-	}
-
-	public void setCollaborator(Collaborator collaborator) {
-		this.collaborator = collaborator;
-	}
 
 	public Skill getSkill() {
 		return skill;
