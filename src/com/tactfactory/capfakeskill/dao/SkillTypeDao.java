@@ -1,4 +1,4 @@
-package com.tactfactory.capfakeskill;
+package com.tactfactory.capfakeskill.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.tactfactory.capfakeskill.entities.SkillType;
+import com.tactfactory.capfakeskill.exceptions.DatabaseNotReadyException;
+import com.tactfactory.capfakeskill.manager.DatabaseManager;
 
 public class SkillTypeDao {
 

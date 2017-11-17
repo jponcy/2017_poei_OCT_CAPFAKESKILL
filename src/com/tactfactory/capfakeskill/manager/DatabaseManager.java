@@ -1,9 +1,11 @@
-package com.tactfactory.capfakeskill;
+package com.tactfactory.capfakeskill.manager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import com.tactfactory.capfakeskill.exceptions.DatabaseNotReadyException;
 
 /**
  * Manage the database.

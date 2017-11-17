@@ -1,4 +1,4 @@
-package com.tactfactory.capfakeskill;
+package com.tactfactory.capfakeskill.entities;
 
 public class SkillType {
     private Integer id;

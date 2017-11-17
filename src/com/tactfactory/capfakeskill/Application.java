@@ -2,6 +2,11 @@ package com.tactfactory.capfakeskill;
 
 import java.util.Arrays;
 
+import com.tactfactory.capfakeskill.dao.SkillTypeDao;
+import com.tactfactory.capfakeskill.entities.SkillType;
+import com.tactfactory.capfakeskill.exceptions.DatabaseNotReadyException;
+import com.tactfactory.capfakeskill.manager.DatabaseManager;
+
 public class Application {
     private static final boolean PRODUCTION = false;
 

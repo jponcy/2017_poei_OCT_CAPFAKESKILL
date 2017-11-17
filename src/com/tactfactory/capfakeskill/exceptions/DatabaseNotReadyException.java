@@ -1,4 +1,4 @@
-package com.tactfactory.capfakeskill;
+package com.tactfactory.capfakeskill.exceptions;
 
 @SuppressWarnings("serial")
 public class DatabaseNotReadyException extends Exception {
