@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.tactfactory.capfakeskill.dao.base.BaseDAO;
+import com.tactfactory.capfakeskill.dao.base.TableField;
 import com.tactfactory.capfakeskill.entities.Project;
 import com.tactfactory.capfakeskill.manager.DatabaseManager;
 
@@ -82,6 +83,7 @@ public class ProjectDAO extends BaseDAO<Project> implements IProjectDAO {
 	}
 
 	public ProjectDAO() {
+	    super();
 		this.tableName = "project";
 		this.questionMarks = "?,?,?,?,?,?,?";
 	}
@@ -92,5 +94,18 @@ public class ProjectDAO extends BaseDAO<Project> implements IProjectDAO {
 		return null;
 	}
 
+    @Override
+    protected void initTableStructure() {
+        this.recordField(new TableField("id", "INT(11)", true));
+        this.recordField(new TableField("name", "varchar(255)").setUnique(true));
+        this.recordField(new TableField("startAt", "date"));
+        this.recordField(new TableField("endAt", "date"));
+        this.recordField(new TableField("description", "TEXT"));
+        this.recordField(new TableField("password", "varchar(100)"));
+    }
 
+    @Override
+    protected Project generateEntity() {
+        return new Project();
+    }
 }

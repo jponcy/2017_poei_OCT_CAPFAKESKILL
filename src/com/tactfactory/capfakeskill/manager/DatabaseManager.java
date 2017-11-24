@@ -28,7 +28,7 @@ public class DatabaseManager {
 	 * User password use for the database connection (should be in separated
 	 * file).
 	 */
-	private static final String PASSWORD = "";
+	private static final String PASSWORD = "jepreferepostgres";
 
 	/** The SQL request to drop the database. */
 	private static final String SQL_DROP_DB = "DROP DATABASE IF EXISTS "

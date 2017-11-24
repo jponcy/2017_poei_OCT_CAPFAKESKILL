@@ -1,12 +1,16 @@
 package com.tactfactory.capfakeskill.dao.base;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.tactfactory.capfakeskill.entities.base.BaseEntity;
 import com.tactfactory.capfakeskill.exceptions.DatabaseNotReadyException;
@@ -18,7 +22,19 @@ public abstract class BaseDAO<K extends BaseEntity> implements IBaseDAO<K> {
 	private static final String SQL_DELETE = "DELETE FROM %s WHERE %s=?";
 	private static final String SQL_UPDATE = "UPDATE %s SET %s WHERE id = ?";
 
-	abstract protected Map<String, String> getTableStructure();
+
+	public BaseDAO() {
+	    this.initTableStructure();
+    }
+
+    /** Table structure. */
+    Map<String, TableField> tableFields = new HashMap<>();
+    /** Initialize the specific table structure. */
+	abstract protected void initTableStructure();
+	/** Record one table field. */
+	protected void recordField(TableField description) {
+	    this.tableFields.put(description.getName(), description);
+	}
 
     protected String questionMarks;
 
@@ -31,6 +47,82 @@ public abstract class BaseDAO<K extends BaseEntity> implements IBaseDAO<K> {
 	public String getTableName() {
 		return tableName;
 	}
+
+	@Override
+    public String getCreateTable() {
+//        String result = DatabaseManager.CREATE_TABLE[0] + this.tableName
+//                + DatabaseManager.CREATE_TABLE[1]
+//                + "id        int (11) Auto_increment  NOT NULL ,"
+//                + "lastname  Varchar (255) ," + "firstname Varchar (255) ,"
+//                + "email     Varchar (255) ," + "password  Varchar (100) ,"
+////              + "group_id  int (11) Auto_increment  NOT NULL ,"
+//                + "id_carrer_manager   Int ," + "PRIMARY KEY (id )"
+////              + "FOREIGN KEY (group_id) REFERENCES group(id)"
+//                + DatabaseManager.CREATE_TABLE[2];
+//        return result;
+	    String result = "";
+
+	    for (Entry<String, TableField> entry : this.tableFields.entrySet()) {
+	        if (!result.equals("")) {
+	            result += ",\n";
+	        }
+
+	        result += entry.getValue().getCreationLine();
+	    }
+
+	    result = DatabaseManager.CREATE_TABLE[0] + this.tableName
+	              + DatabaseManager.CREATE_TABLE[1]
+                  + result + DatabaseManager.CREATE_TABLE[2];
+
+	    System.out.println(result);
+
+	    return result;
+    }
+
+	abstract protected K generateEntity();
+
+	/** Upper the first letter. */
+	protected String capitalize(String s) {
+	    return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+	}
+
+    protected K retreiveDatas(ResultSet rs) {
+        K result = this.generateEntity();
+        int i = 1;
+
+        for (Entry<String, TableField> entry : this.tableFields.entrySet()) {
+            final String type = capitalize(entry.getValue().getType());
+            final String name = capitalize(entry.getValue().getName());
+
+            try {
+                Method getter = rs.getClass().getDeclaredMethod(
+                        "get" + type, Integer.class);
+                Method setter = result.getClass().getDeclaredMethod(
+                        "set" + name, Class.forName("java.lang." + type));
+
+                Object value = getter.invoke(rs, i++);
+                setter.invoke(result, value);
+            } catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// ***** OLD *****
 
     @Override
     public void update(K item) {
@@ -148,9 +240,6 @@ public abstract class BaseDAO<K extends BaseEntity> implements IBaseDAO<K> {
 
         return result;
     }
-
-
-	protected abstract K retreiveDatas(ResultSet rs);
 
 	protected abstract void setPreparedStatement(PreparedStatement st, K item);
 }

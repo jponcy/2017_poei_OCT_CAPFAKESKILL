@@ -3,50 +3,24 @@ package com.tactfactory.capfakeskill.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.tactfactory.capfakeskill.dao.base.BaseDAO;
+import com.tactfactory.capfakeskill.dao.base.TableField;
 import com.tactfactory.capfakeskill.entities.User;
-import com.tactfactory.capfakeskill.manager.DatabaseManager;
 
 public class UserDAO extends BaseDAO<User> implements IUserDAO {
 
-	/**
-	 	id        int (11) Auto_increment  NOT NULL ,
-	    lastname  Varchar (255) ,
-	    firstname Varchar (255) ,
-	    email     Varchar (255) ,
-	    password  Varchar (100) ,
-	    id_carrer_manager   Int ,
-	    PRIMARY KEY (id )
-	 */
     @Override
-	public String getCreateTable() {
-		String result = DatabaseManager.CREATE_TABLE[0] + this.tableName
-				+ DatabaseManager.CREATE_TABLE[1]
-				+ "id        int (11) Auto_increment  NOT NULL ,"
-				+ "lastname  Varchar (255) ," + "firstname Varchar (255) ,"
-				+ "email     Varchar (255) ," + "password  Varchar (100) ,"
-//		        + "group_id  int (11) Auto_increment  NOT NULL ,"
-				+ "id_carrer_manager   Int ," + "PRIMARY KEY (id )"
-//		        + "FOREIGN KEY (group_id) REFERENCES group(id)"
-				+ DatabaseManager.CREATE_TABLE[2];
-		return result;
-	}
-
-
+    protected void initTableStructure() {
+        this.recordField(new TableField("id", "INT(11)", true));
+        this.recordField(new TableField("lastname", "varchar(255)"));
+        this.recordField(new TableField("firstname", "varchar(255)"));
+        this.recordField(new TableField("email", "varchar(255)"));
+        this.recordField(new TableField("password", "varchar(100)"));
+    }
     @Override
-    protected Map<String, String> getTableStructure() {
-        Map<String, String> result = new HashMap<>();
-
-        result.put("id", "int");
-        result.put("lastname", "string");
-        result.put("firstname", "string");
-        result.put("email", "string");
-        result.put("password", "string");
-
-        return result;
+    protected User generateEntity() {
+        return new User();
     }
 
 	@Override
