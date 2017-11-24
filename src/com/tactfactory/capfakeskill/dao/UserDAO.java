@@ -3,35 +3,15 @@ package com.tactfactory.capfakeskill.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.tactfactory.capfakeskill.dao.base.BaseDAO;
 import com.tactfactory.capfakeskill.entities.User;
-import com.tactfactory.capfakeskill.entities.base.BaseEntity;
-import com.tactfactory.capfakeskill.exceptions.DatabaseNotReadyException;
 import com.tactfactory.capfakeskill.manager.DatabaseManager;
 
 public class UserDAO extends BaseDAO<User> implements IUserDAO {
 
-	@Override
-	public void delete(User item) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void update(User item) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public User select(User item) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	/**
 	 	id        int (11) Auto_increment  NOT NULL ,
 	    lastname  Varchar (255) ,
@@ -41,26 +21,45 @@ public class UserDAO extends BaseDAO<User> implements IUserDAO {
 	    id_carrer_manager   Int ,
 	    PRIMARY KEY (id )
 	 */
+    @Override
 	public String getCreateTable() {
 		String result = DatabaseManager.CREATE_TABLE[0] + this.tableName
 				+ DatabaseManager.CREATE_TABLE[1]
 				+ "id        int (11) Auto_increment  NOT NULL ,"
 				+ "lastname  Varchar (255) ," + "firstname Varchar (255) ,"
 				+ "email     Varchar (255) ," + "password  Varchar (100) ,"
+//		        + "group_id  int (11) Auto_increment  NOT NULL ,"
 				+ "id_carrer_manager   Int ," + "PRIMARY KEY (id )"
+//		        + "FOREIGN KEY (group_id) REFERENCES group(id)"
 				+ DatabaseManager.CREATE_TABLE[2];
 		return result;
 	}
 
+
+    @Override
+    protected Map<String, String> getTableStructure() {
+        Map<String, String> result = new HashMap<>();
+
+        result.put("id", "int");
+        result.put("lastname", "string");
+        result.put("firstname", "string");
+        result.put("email", "string");
+        result.put("password", "string");
+
+        return result;
+    }
+
 	@Override
 	protected void setPreparedStatement(PreparedStatement st, User item) {
+	    short i = 1;
+
 		try {
-			st.setString(1, null);
-			st.setString(2, item.getLastname());
-			st.setString(3, item.getFirstname());
-			st.setString(4, item.getEmail());
-			st.setString(5, item.getPassword());
-			st.setString(6, null);
+	        st.setObject((item.getId() == null ? i++ : 5), item.getId());
+
+			st.setString(i++, item.getLastname());
+			st.setString(i++, item.getFirstname());
+			st.setString(i++, item.getEmail());
+			st.setString(i++, item.getPassword());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -87,5 +86,6 @@ public class UserDAO extends BaseDAO<User> implements IUserDAO {
 	public UserDAO() {
 		this.tableName = "user";
 		this.questionMarks = "?,?,?,?,?,?";
+		this.updateColumns = "lastname=?,firstname=?,email=?,password=?";
 	}
 }

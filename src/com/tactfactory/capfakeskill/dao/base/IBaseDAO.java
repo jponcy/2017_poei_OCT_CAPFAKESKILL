@@ -10,6 +10,7 @@ public interface IBaseDAO <T extends BaseEntity> {
 	public void delete(T item);
 	public void update(T item);
 	public T select(T item);
+	public T select(double id);
 	public List<T> select();
 
 	public String getCreateTable();
