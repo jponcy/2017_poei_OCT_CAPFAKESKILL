@@ -8,6 +8,15 @@ public class User extends BaseEntity {
 	private String firstname;
 	private String email;
 	private String password;
+	private Integer id_carrer_manager;
+
+	public Integer getId_carrer_manager() {
+		return id_carrer_manager;
+	}
+
+	public void setId_carrer_manager(Integer id_carrer_manager) {
+		this.id_carrer_manager = id_carrer_manager;
+	}
 
 	public String getLastname() {
 		return lastname;

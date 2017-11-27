@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import com.tactfactory.capfakeskill.dao.base.BaseDAO;
 import com.tactfactory.capfakeskill.entities.Project;
@@ -88,6 +89,12 @@ public class ProjectDAO extends BaseDAO<Project> implements IProjectDAO {
 
 	@Override
 	protected Project retreiveDatas(ResultSet rs) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Map<String, String> getTableStructure() {
 		// TODO Auto-generated method stub
 		return null;
 	}
