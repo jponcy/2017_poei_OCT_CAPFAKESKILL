@@ -1,13 +1,16 @@
 package com.tactfactory.capfakeskill;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import com.tactfactory.capfakeskill.dao.ProjectDAO;
-import com.tactfactory.capfakeskill.dao.UserDAO;
+import com.tactfactory.capfakeskill.dao.dao.ProjectDAO;
+import com.tactfactory.capfakeskill.dao.dao.UserDAO;
 import com.tactfactory.capfakeskill.entities.Project;
 import com.tactfactory.capfakeskill.entities.User;
 import com.tactfactory.capfakeskill.exceptions.DatabaseNotReadyException;
 import com.tactfactory.capfakeskill.manager.DatabaseManager;
+import com.tactfactory.capfakeskill.utils.DumpFields;
 
 public class Application {
     private static final boolean PRODUCTION = false;
@@ -55,5 +58,13 @@ public class Application {
     	for (User user2 : users) {
 			System.out.println(user2);
 		}
+
+    	/*User user = DumpFields.createContentsEmpty(User.class);
+    	user.setId(12.0);
+
+    	Map<String,Object> map = DumpFields.fielder(user);
+    	for (Entry<String, Object> entry : map.entrySet()) {
+    		System.out.println(entry.getKey()+ " | " + entry.getValue());
+		}*/
     }
 }

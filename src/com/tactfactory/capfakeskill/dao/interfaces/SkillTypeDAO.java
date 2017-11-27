@@ -1,4 +1,4 @@
-package com.tactfactory.capfakeskill.dao;
+package com.tactfactory.capfakeskill.dao.interfaces;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +15,12 @@ import com.tactfactory.capfakeskill.manager.DatabaseManager;
 
 public class SkillTypeDAO extends BaseDAO<SkillType> {
 
-    private static final String SQL_INSERT = "INSERT INTO skill_type (name) VALUES (?)";
+    public SkillTypeDAO() {
+		super(SkillType.class);
+		// TODO Auto-generated constructor stub
+	}
+
+	private static final String SQL_INSERT = "INSERT INTO skill_type (name) VALUES (?)";
     private static final String SQL_SELECT_ALL = "SELECT * FROM skill_type";
 
     /**

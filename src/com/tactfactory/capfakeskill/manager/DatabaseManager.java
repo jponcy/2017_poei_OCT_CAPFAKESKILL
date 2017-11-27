@@ -1,13 +1,18 @@
 package com.tactfactory.capfakeskill.manager;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.tactfactory.capfakeskill.dao.ProjectDAO;
-import com.tactfactory.capfakeskill.dao.UserDAO;
+import com.tactfactory.capfakeskill.dao.dao.ProjectDAO;
+import com.tactfactory.capfakeskill.dao.dao.UserDAO;
 import com.tactfactory.capfakeskill.exceptions.DatabaseNotReadyException;
+import com.tactfactory.capfakeskill.utils.DumpFields;
 
 /**
  * Manage the database.
@@ -58,19 +63,57 @@ public class DatabaseManager {
 	 */
 	public void prepareDb(boolean production) {
 		if (!production) {
+			ArrayList<String> classes = new ArrayList<String>();
+			try {
+				classes = DumpFields.getClassesNames("com.tactfactory.capfakeskill.dao.dao");
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 			try (Connection sgbd = this.createConnectionSGBD();
 					PreparedStatement drop = sgbd.prepareStatement(SQL_DROP_DB);
 					PreparedStatement create = sgbd
 							.prepareStatement(SQL_CREATE_DB);
-					PreparedStatement userTable =
-							sgbd.prepareStatement((new UserDAO()).getCreateTable());
-					PreparedStatement projectTable =
-							sgbd.prepareStatement((new ProjectDAO()).getCreateTable());
+
+
 			) {
 				drop.executeUpdate();
 				create.executeUpdate();
-				userTable.executeUpdate();
-				projectTable.executeUpdate();
+
+				PreparedStatement st = null;
+
+				for (String string : classes) {
+					try {
+						st = sgbd.prepareStatement((String)
+								Class.forName(string).getMethod("getCreateTable")
+								.invoke(
+										DumpFields.createContentsEmpty(
+												Class.forName(string))));
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NoSuchMethodException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SecurityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					st.executeUpdate();
+				}
 
 			} catch (SQLException e) {
 				e.printStackTrace();

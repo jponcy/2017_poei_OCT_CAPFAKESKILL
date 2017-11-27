@@ -1,21 +1,36 @@
 package com.tactfactory.capfakeskill.entities;
 
+import javax.persistence.Column;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.tactfactory.capfakeskill.entities.base.BaseEntity;
 
+@Table(name="user")
 public class User extends BaseEntity {
 
+	@Column(name="lastname")
 	private String lastname;
-	private String firstname;
-	private String email;
-	private String password;
-	private Integer id_carrer_manager;
 
-	public Integer getId_carrer_manager() {
-		return id_carrer_manager;
+	@Column(name="firstname")
+	private String firstname;
+
+	@Column(name="email")
+	private String email;
+
+	@Column(name="password")
+	private String password;
+
+	@OneToMany(targetEntity=CarrerManager.class,mappedBy="collaborators")
+	@Column(name="id_carrer_manager")
+	private User carrer_manager;
+
+	public User getCarrer_manager() {
+		return carrer_manager;
 	}
 
-	public void setId_carrer_manager(Integer id_carrer_manager) {
-		this.id_carrer_manager = id_carrer_manager;
+	public void setId_carrer_manager(User carrer_manager) {
+		this.carrer_manager = carrer_manager;
 	}
 
 	public String getLastname() {

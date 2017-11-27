@@ -1,5 +1,8 @@
 package com.tactfactory.capfakeskill.dao.base;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,9 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.tactfactory.capfakeskill.entities.User;
 import com.tactfactory.capfakeskill.entities.base.BaseEntity;
 import com.tactfactory.capfakeskill.exceptions.DatabaseNotReadyException;
 import com.tactfactory.capfakeskill.manager.DatabaseManager;
+import com.tactfactory.capfakeskill.utils.DumpFields;
 
 public abstract class BaseDAO<K extends BaseEntity> implements IBaseDAO<K> {
 
@@ -27,6 +32,7 @@ public abstract class BaseDAO<K extends BaseEntity> implements IBaseDAO<K> {
 	protected String idColumn = "id";
 
 	protected String updateColumns = null;
+	private Class<K> klazz;
 
 	public String getTableName() {
 		return tableName;
@@ -149,7 +155,79 @@ public abstract class BaseDAO<K extends BaseEntity> implements IBaseDAO<K> {
         return result;
     }
 
-	protected abstract K retreiveDatas(ResultSet rs);
+	protected K retreiveDatas(ResultSet rs){
+		K result = DumpFields.createContentsEmpty(klazz);
+
+		try {
+			List<Field> fields = DumpFields.getFields(klazz);
+			List<Method> methods = DumpFields.getSetter(klazz);
+			for (Field field : fields) {
+				if (!field.getType().isArray()) {
+					int columId = rs.findColumn(field.getName());
+					String methodName = "set"+
+							String.valueOf(field.getName().charAt(0)).toUpperCase()
+							+field.getName().substring(1, field.getName().length());
+					for (Method method : methods) {
+						if (method != null && method.getName().equals(methodName))
+						{
+							if (field.getType().getSimpleName().equals("Double")) {
+								method.invoke(result,rs.getDouble(columId));
+							}else if (field.getType().getSimpleName().equals("String")) {
+								method.invoke(result,rs.getString(columId));
+							}
+						}
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
 
 	protected abstract void setPreparedStatement(PreparedStatement st, K item);
+
+	@Override
+	public String getCreateTable() {
+		String result = DatabaseManager.CREATE_TABLE[0]
+				+ (klazz.getAnnotation(javax.persistence.Table.class)).name()
+				+ DatabaseManager.CREATE_TABLE[1];
+
+		List<Field> fields = DumpFields.getFields(klazz);
+		for (Field field : fields) {
+			if (field.getAnnotation(javax.persistence.Column.class) != null) {
+				result += field.getAnnotation(javax.persistence.Column.class).name();
+				result += " ";
+				if (field.getType().getSimpleName().equals("Double")) {
+					result += "int";
+				}else if (field.getType().getSimpleName().equals("String")) {
+					result += "varchar(255)";
+				}else if (field.getType().getSuperclass().getClass().isInstance(BaseEntity.class)) {
+					result += "int";
+				}
+
+				if (field.getAnnotation(javax.persistence.Id.class) != null) {
+					result += " PRIMARY KEY Auto_increment  NOT NULL ";
+				}
+
+				result +=",";
+			}
+		}
+
+		result = result.substring(0, result.length() - 1);
+		result += DatabaseManager.CREATE_TABLE[2];
+
+		return result;
+	}
+
+	public BaseDAO(Class<K> klazz){
+		this.klazz = klazz;
+	}
 }

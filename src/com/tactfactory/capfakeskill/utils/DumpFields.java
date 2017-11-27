@@ -156,7 +156,7 @@ public class DumpFields {
 		ArrayList<Method> result = new ArrayList<Method>();
 		try {
 			for (PropertyDescriptor propertyDescriptor : Introspector
-					.getBeanInfo(klazz, BaseEntity.class)
+					.getBeanInfo(klazz, Object.class)
 					.getPropertyDescriptors()) {
 
 				result.add(propertyDescriptor.getWriteMethod());
@@ -345,7 +345,7 @@ public class DumpFields {
 		}
 
 		for (Class class1 : classes) {
-			result.add(class1.getSimpleName());
+			result.add(class1.getName());
 		}
 		return result;
 	}

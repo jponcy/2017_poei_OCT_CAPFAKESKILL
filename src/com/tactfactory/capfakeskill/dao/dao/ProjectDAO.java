@@ -1,4 +1,4 @@
-package com.tactfactory.capfakeskill.dao;
+package com.tactfactory.capfakeskill.dao.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.tactfactory.capfakeskill.dao.base.BaseDAO;
+import com.tactfactory.capfakeskill.dao.interfaces.IProjectDAO;
 import com.tactfactory.capfakeskill.entities.Project;
 import com.tactfactory.capfakeskill.manager.DatabaseManager;
 
@@ -83,6 +84,7 @@ public class ProjectDAO extends BaseDAO<Project> implements IProjectDAO {
 	}
 
 	public ProjectDAO() {
+		super(Project.class);
 		this.tableName = "project";
 		this.questionMarks = "?,?,?,?,?,?,?";
 	}

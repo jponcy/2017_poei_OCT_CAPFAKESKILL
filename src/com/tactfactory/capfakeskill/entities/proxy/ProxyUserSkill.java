@@ -8,8 +8,8 @@ import java.util.List;
 
 import sun.security.pkcs11.Secmod.DbMode;
 
-import com.tactfactory.capfakeskill.dao.SkillTypeDAO;
-import com.tactfactory.capfakeskill.dao.UserDAO;
+import com.tactfactory.capfakeskill.dao.dao.UserDAO;
+import com.tactfactory.capfakeskill.dao.interfaces.SkillTypeDAO;
 import com.tactfactory.capfakeskill.entities.Collaborator;
 import com.tactfactory.capfakeskill.entities.CollaboratorSkills;
 import com.tactfactory.capfakeskill.entities.Skill;

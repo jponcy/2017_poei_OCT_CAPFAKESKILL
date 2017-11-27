@@ -4,14 +4,14 @@ import java.util.List;
 
 public class CarrerManager extends User {
 
-	private List<Collaborator> collaborator;
+	private List<Collaborator> collaborators;
 
-	public List<Collaborator> getCollaborator() {
-		return collaborator;
+	public List<Collaborator> getCollaborators() {
+		return collaborators;
 	}
 
-	public void setCollaborator(List<Collaborator> collaborator) {
-		this.collaborator = collaborator;
+	public void setCollaborators(List<Collaborator> collaborator) {
+		this.collaborators = collaborator;
 	}
 
 }

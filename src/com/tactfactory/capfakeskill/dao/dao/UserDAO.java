@@ -1,4 +1,4 @@
-package com.tactfactory.capfakeskill.dao;
+package com.tactfactory.capfakeskill.dao.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.tactfactory.capfakeskill.dao.base.BaseDAO;
+import com.tactfactory.capfakeskill.dao.interfaces.IUserDAO;
 import com.tactfactory.capfakeskill.entities.User;
 import com.tactfactory.capfakeskill.manager.DatabaseManager;
 
@@ -17,7 +18,7 @@ public class UserDAO extends BaseDAO<User> implements IUserDAO {
 	 * Varchar (255) , email Varchar (255) , password Varchar (100) ,
 	 * id_carrer_manager Int , PRIMARY KEY (id )
 	 */
-	@Override
+	/*@Override
 	public String getCreateTable() {
 		String result = DatabaseManager.CREATE_TABLE[0] + this.tableName
 				+ DatabaseManager.CREATE_TABLE[1]
@@ -31,7 +32,7 @@ public class UserDAO extends BaseDAO<User> implements IUserDAO {
 				// + "FOREIGN KEY (group_id) REFERENCES group(id)"
 				+ DatabaseManager.CREATE_TABLE[2];
 		return result;
-	}
+	}*/
 
 	@Override
 	protected Map<String, String> getTableStructure() {
@@ -58,8 +59,8 @@ public class UserDAO extends BaseDAO<User> implements IUserDAO {
 			st.setString(i++, item.getFirstname());
 			st.setString(i++, item.getEmail());
 			st.setString(i++, item.getPassword());
-			if (item.getId_carrer_manager() != null) {
-				st.setInt(i++, item.getId_carrer_manager());
+			if (item.getCarrer_manager() != null) {
+				st.setDouble(i++, item.getCarrer_manager().getId());
 			}else {
 				st.setNull(i++, 0);
 			}
@@ -69,7 +70,7 @@ public class UserDAO extends BaseDAO<User> implements IUserDAO {
 		}
 	}
 
-	@Override
+	/*@Override
 	protected User retreiveDatas(ResultSet rs) {
 		User result = new User();
 
@@ -86,10 +87,10 @@ public class UserDAO extends BaseDAO<User> implements IUserDAO {
 		}
 
 		return result;
-	}
+	}*/
 
 	public UserDAO() {
-		this.tableName = "user";
+		super(User.class);
 		this.questionMarks = "?,?,?,?,?,?";
 		this.updateColumns = "lastname=?,firstname=?,email=?,password=?,id_carrer_manager=?";
 	}
