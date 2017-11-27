@@ -6,34 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.tactfactory.capfakeskill.dao.base.BaseDAO;
 import com.tactfactory.capfakeskill.entities.SkillType;
 import com.tactfactory.capfakeskill.exceptions.DatabaseNotReadyException;
 import com.tactfactory.capfakeskill.manager.DatabaseManager;
 
-public class SkillTypeDao {
+public class SkillTypeDAO extends BaseDAO<SkillType> {
 
     private static final String SQL_INSERT = "INSERT INTO skill_type (name) VALUES (?)";
     private static final String SQL_SELECT_ALL = "SELECT * FROM skill_type";
-
-    /**
-     * Insert the given type into database.
-     * @param type
-     * @return
-     */
-    public boolean insert(SkillType type) {
-        boolean result = false;
-
-        try (PreparedStatement st = DatabaseManager.conn().prepareStatement(SQL_INSERT)) {
-           st.setString(1, type.getName());
-
-           result = st.executeUpdate() == 1;
-        } catch (SQLException | DatabaseNotReadyException e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
 
     /**
      * Inserts many types in one operation.
@@ -90,4 +73,34 @@ public class SkillTypeDao {
 
         return result ;
     }
+
+	@Override
+	public SkillType insert(SkillType item) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getCreateTable() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Map<String, String> getTableStructure() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected SkillType retreiveDatas(ResultSet rs) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected void setPreparedStatement(PreparedStatement st, SkillType item) {
+		// TODO Auto-generated method stub
+
+	}
 }

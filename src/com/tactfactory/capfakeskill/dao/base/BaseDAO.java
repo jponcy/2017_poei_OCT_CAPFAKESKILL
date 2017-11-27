@@ -149,7 +149,6 @@ public abstract class BaseDAO<K extends BaseEntity> implements IBaseDAO<K> {
         return result;
     }
 
-
 	protected abstract K retreiveDatas(ResultSet rs);
 
 	protected abstract void setPreparedStatement(PreparedStatement st, K item);
